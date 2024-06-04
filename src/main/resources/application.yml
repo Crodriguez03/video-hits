@@ -1,1 +1,15 @@
 spring.application.name: video-hits
+
+rabbitmq:
+   connection:
+      username: guest
+      password: guest
+      host: localhost
+      port: 5672
+   queue:
+      video-hit:
+         group1: "video-hit.group1"
+      dead-letter: "DLQ"
+   exchange:
+      video-hit: "video-hit"
+      dead-letter: "DLX"
