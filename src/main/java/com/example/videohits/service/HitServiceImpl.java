@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.videohits.dto.HitDTO;
 import com.example.videohits.dto.VideoHitDTO;
+import com.example.videohits.repository.VideoHitRepository;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -27,9 +28,12 @@ public class HitServiceImpl implements HitService {
 	
 	private final RabbitTemplate rabbitTemplate;
 	
+	private final VideoHitRepository videoHitRepository;
+	
 	private boolean flagDaemon = true;
 	
-	public HitServiceImpl(RabbitTemplate rabbitTemplate) {
+	public HitServiceImpl(VideoHitRepository videoHitRepository, RabbitTemplate rabbitTemplate) {
+		this.videoHitRepository = videoHitRepository;
 		this.rabbitTemplate = rabbitTemplate;
 	}
 
@@ -81,10 +85,16 @@ public class HitServiceImpl implements HitService {
 		rabbitTemplate.convertAndSend(exchangeVideoHit, "#", new VideoHitDTO(videoId, hits));
 	}
 	
+	// Consumimos los hits que quedan en la cola antes de apagar
 	@PreDestroy
 	private void preDestroy() {
 		flagDaemon = false;
 		consumeHitsDeque();		
+	}
+
+	@Override
+	public void saveVideoHit(VideoHitDTO videoHit) {
+		videoHitRepository.upsert(videoHit.getVideoId(), videoHit.getCount());
 	}
 	
 }
