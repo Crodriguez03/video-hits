@@ -60,12 +60,12 @@ public class HitControllerImpl implements HitController {
 			
 			RandomGenerator random = RandomGenerator.getDefault();
 
-			List<String> videosId = new ArrayList<>();
-			IntStream.range(0, 20).forEach(i -> videosId.add(ObjectId.get().toString()));
+			List<String> videoIds = new ArrayList<>();
+			IntStream.range(0, 20).forEach(i -> videoIds.add(ObjectId.get().toString()));
 
 			while (true) {
 				IntStream.range(0, 20).parallel().forEach(videoId -> restTemplate
-						.postForLocation("http://localhost:8080/hit", new HitDTO(videosId.get(random.nextInt(0, 20)))));
+						.postForLocation("http://localhost:8080/hit", new HitDTO(videoIds.get(random.nextInt(0, 20)))));
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {

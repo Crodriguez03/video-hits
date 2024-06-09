@@ -107,9 +107,9 @@ public class HitServiceImpl implements HitService {
 	}
 
 	@Override
-	public void saveVideosHit(Collection<VideoHitDTO> videosHitDTO) {
-		List<VideoHit> videosHit = videosHitDTO.stream().map(videoHit -> new VideoHit(videoHit.getVideoId(), videoHit.getCount())).toList();
-		videoHitRepository.upsertBulk(videosHit);
+	public void saveVideoHits(Collection<VideoHitDTO> videoHitsDTO) {
+		List<VideoHit> videoHits = videoHitsDTO.stream().map(videoHit -> new VideoHit(videoHit.getVideoId(), videoHit.getCount())).toList();
+		videoHitRepository.upsertBulk(videoHits);
 	}
 	
 }

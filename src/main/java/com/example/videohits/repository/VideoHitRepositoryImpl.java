@@ -1,6 +1,6 @@
 package com.example.videohits.repository;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.BulkOperations.BulkMode;
@@ -26,9 +26,9 @@ public class VideoHitRepositoryImpl implements VideoHitRepository {
 	}
 
 	@Override
-	public void upsertBulk(List<VideoHit> videosHit) {
+	public void upsertBulk(Collection<VideoHit> videoHits) {
 		BulkOperations bulk = template.bulkOps(BulkMode.UNORDERED, VideoHit.class);
-		bulk.upsert(videosHit.stream().map(this::createPair).toList()).execute();
+		bulk.upsert(videoHits.stream().map(this::createPair).toList()).execute();
 	}
 	
 	private Pair<Query, Update> createPair(VideoHit videoHit) {

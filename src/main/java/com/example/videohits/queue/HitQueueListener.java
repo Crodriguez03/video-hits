@@ -24,15 +24,11 @@ public class HitQueueListener {
 		this.objectMapper = objectMapper;
 	}
 	
-	@RabbitListener(queues = "${rabbitmq.queue.video-hit}", containerFactory = "prefetchRabbitListenerContainerFactory", concurrency = "5")
+	@RabbitListener(queues = "${rabbitmq.queue.video-hit}", containerFactory = "prefetchRabbitListenerContainerFactory")
 	public void handleEventUser(Message message) throws JsonProcessingException {
 		
-		String body = new String(message.getBody());
-//		VideoHitDTO videoHit = objectMapper.readValue(body, VideoHitDTO.class);
-//		hitService.saveVideoHit(videoHit);
-		
-		
-		Set<VideoHitDTO> videosHit = objectMapper.readValue(body, new TypeReference<Set<VideoHitDTO>>(){});
-		hitService.saveVideosHit(videosHit);
+		String body = new String(message.getBody());		
+		Set<VideoHitDTO> videoHits = objectMapper.readValue(body, new TypeReference<Set<VideoHitDTO>>(){});
+		hitService.saveVideoHits(videoHits);
 	}
 }

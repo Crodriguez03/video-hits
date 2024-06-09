@@ -9,5 +9,5 @@ public interface HitService {
 
 	void createHit(HitDTO hit);
 
-	void saveVideosHit(Collection<VideoHitDTO> videosHit);
+	void saveVideoHits(Collection<VideoHitDTO> videoHits);
 }
