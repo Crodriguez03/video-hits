@@ -1,7 +1,12 @@
 package com.example.videohits.entity;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class VideoHit {
 	
+	@Id
 	private final String videoId;
 	private final Integer count;
 	

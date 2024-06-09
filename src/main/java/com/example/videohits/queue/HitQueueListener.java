@@ -1,5 +1,7 @@
 package com.example.videohits.queue;
 
+import java.util.Set;
+
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.example.videohits.dto.VideoHitDTO;
 import com.example.videohits.service.HitService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
@@ -25,7 +28,11 @@ public class HitQueueListener {
 	public void handleEventUser(Message message) throws JsonProcessingException {
 		
 		String body = new String(message.getBody());
-		VideoHitDTO videoHit = objectMapper.readValue(body, VideoHitDTO.class);
-		hitService.saveVideoHit(videoHit);
+//		VideoHitDTO videoHit = objectMapper.readValue(body, VideoHitDTO.class);
+//		hitService.saveVideoHit(videoHit);
+		
+		
+		Set<VideoHitDTO> videosHit = objectMapper.readValue(body, new TypeReference<Set<VideoHitDTO>>(){});
+		hitService.saveVideosHit(videosHit);
 	}
 }

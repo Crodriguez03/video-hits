@@ -22,7 +22,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 
-import com.example.videohits.dto.HitDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -42,10 +41,10 @@ public class RabbitMqConfig {
 	@Value("${rabbitmq.connection.password}")
 	public String password;
 
-	@Value("${rabbitmq.queue.video-hit.group1}")
-	private String queueVideoHitGroup1;
+	@Value("${rabbitmq.queue.video-hit}")
+	private String queueVideoHit;
 
-	@Value("${rabbitmq.exchange.vieo-hit}")
+	@Value("${rabbitmq.exchange.video-hit}")
 	private String topicExchangeVideoHit;
 	
 	@Value("${rabbitmq.exchange.dead-letter}")
@@ -57,7 +56,7 @@ public class RabbitMqConfig {
 	Queue queueVideoHitGroup1() {
 		Map<String, Object> arguments = new HashMap<>();
 		arguments.put(DEAD_LETTER_EXCHANGE_PARAM, topicExchangeDeadLetter);
-		return new Queue(queueVideoHitGroup1, true, false, false, arguments);
+		return new Queue(queueVideoHit, true, false, false, arguments);
 	}
 	
 	@Bean
@@ -70,32 +69,9 @@ public class RabbitMqConfig {
 		return BindingBuilder.bind(queueVideoHitGroup1()).to(exchangeVideoHit()).with("#");
 	}
 	
-//	@Bean
-//	Queue deadLetterQueue() {
-//		return new Queue(queueDeadLetter);
-//	}
-	
 	@Bean
 	TopicExchange deadLetterExchange() {
 		return new TopicExchange(topicExchangeDeadLetter);
-	}
-	
-//	@Bean
-//	Binding bindingDeadLetter() {
-//		return BindingBuilder.bind(deadLetterQueue()).to(deadLetterExchange()).with("#");
-//	}
-	
-	
-	public static void main(String[] args) {
-		
-		HitDTO hit = new HitDTO("FDSFDF");
-		HitDTO hit2 = new HitDTO("FDSFDF");
-		
-		if (hit == hit2) {
-			System.out.println("Error");
-		} else {
-			System.out.println("FuncionaS");
-		}
 	}
 
 	@Bean
